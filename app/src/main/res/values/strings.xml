@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">SAHIT Score</string>
+    <string name="message1String">Prediction models for 3 month outcome after aSAH</string>
+    <string name="message2String">Admission Characteristics</string>
+    <string name="message3String">Core</string>
+    <string name="ageString">Age (0–99)</string>
+    <string name="hyperString">Hypertension (Y/N)</string>
+    <string name="message4String">Neuro</string>
+    <string name="sizeString">Size (mm)</string>
+    <string name="message5String">Full</string>
+    <string name="clear">Clear</string>
+    <string name="calc">Calculate</string>
+    <string-array name="hypertension">
+        <item>[Hypertension]</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+    <string-array name="wfnsGrades">
+        <item>[WFNS Grade]</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+    <string-array name="locations">
+        <item>[Location]</item>
+        <item>ACA</item>
+        <item>ICA</item>
+        <item>MCA</item>
+        <item>PCA</item>
+    </string-array>
+    <string-array name="fisherGrades">
+        <item>[Fisher Grade]</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+    <string-array name="repairMode">
+        <item>[Repair Modality]</item>
+        <item>Clip</item>
+        <item>Coil</item>
+        <item>Not Repaired</item>
+    </string-array>
+    <string name="resultsMessage">Results</string>
+    <string name="title_activity_results">Results</string>
+    <string name="coreMsg">Core Characteristics</string>
+    <string name="neuroMsg">Neuro Characteristics</string>
+    <string name="fullMsg">Full Characteristics</string>
+    <string name="mortality">With a 95% confidence interval, the error for mortality is between&#160;</string>
+    <string name="unfavourable">% and for unfavourable outcome it is between&#160;</string>
+    <string name="and">% and&#160;</string>
+    <string name="percent">%</string>
+</resources>
