@@ -1,7 +1,12 @@
 package com.example.erin.sahitscore;
 
+import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -23,7 +28,6 @@ import java.util.ArrayList;
  */
 
 //TODO: Implement SE from Blessing
-//TODO: Display the probability of a favourable outcome? How?
 
 public class ResultsActivity extends AppCompatActivity {
 
@@ -31,6 +35,12 @@ public class ResultsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+
+        ActionBar ab = getSupportActionBar();
+        assert ab != null;
+        ab.setDisplayHomeAsUpEnabled(true);
 
         TextView coreText = (TextView) findViewById(R.id.coreText);
         TextView neuroText = (TextView) findViewById(R.id.neuroText);
@@ -81,14 +91,16 @@ public class ResultsActivity extends AppCompatActivity {
         ArrayList<String> labels = new ArrayList<>();
         labels.add("Mortality");
         labels.add("Unfavourable");
+        labels.add("Favourable");
 
         ArrayList<BarEntry> core = new ArrayList<>();
         core.add(new BarEntry((float) PPCoreMort * 100, 0));
         core.add(new BarEntry((float) PPCoreUF * 100, 1));
+        core.add(new BarEntry((float) (100 - (PPCoreUF * 100)), 2));
 
         BarDataSet coreSet = new BarDataSet(core, "");
         coreSet.setValueTextSize(12f);
-        coreSet.setColors(new int[]{R.color.colorBlack, R.color.colorRed}, this);
+        coreSet.setColors(new int[]{R.color.colorBlack, R.color.colorRed, R.color.colorGreen}, this);
         BarData coreData = new BarData(labels, coreSet);
         coreChart.setData(coreData);
         coreChart.setDescription("");
@@ -126,10 +138,11 @@ public class ResultsActivity extends AppCompatActivity {
             ArrayList<BarEntry> neuro = new ArrayList<>();
             neuro.add(new BarEntry((float) PPNeuroMort * 100, 0));
             neuro.add(new BarEntry((float) PPNeuroUF * 100, 1));
+            neuro.add(new BarEntry((float) (100 - (PPNeuroUF * 100)), 2));
 
             BarDataSet neuroSet = new BarDataSet(neuro, "");
             neuroSet.setValueTextSize(12f);
-            neuroSet.setColors(new int[] {R.color.colorBlack, R.color.colorRed}, this);
+            neuroSet.setColors(new int[] {R.color.colorBlack, R.color.colorRed, R.color.colorGreen}, this);
             BarData neuroData = new BarData(labels, neuroSet);
             neuroChart.setData(neuroData);
             neuroChart.setDescription("");
@@ -167,10 +180,11 @@ public class ResultsActivity extends AppCompatActivity {
             ArrayList<BarEntry> full = new ArrayList<>();
             full.add(new BarEntry((float) PPFullMort * 100, 0));
             full.add(new BarEntry((float) PPFullUF * 100, 1));
+            full.add(new BarEntry((float) (100 - (PPFullUF * 100)), 2));
 
             BarDataSet fullSet = new BarDataSet(full, "");
             fullSet.setValueTextSize(12f);
-            fullSet.setColors(new int[] {R.color.colorBlack, R.color.colorRed}, this);
+            fullSet.setColors(new int[] {R.color.colorBlack, R.color.colorRed, R.color.colorGreen}, this);
             BarData fullData = new BarData(labels, fullSet);
             fullChart.setData(fullData);
             fullChart.setDescription("");
@@ -183,6 +197,30 @@ public class ResultsActivity extends AppCompatActivity {
             fullUFY.setAxisMaxValue(119f);
             fullUFY.setAxisMinValue(0f);
             fullUFY.setEnabled(false);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_items, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.home_button:
+                Intent homeIntent = new Intent(this, InformationActivity.class);
+                homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(homeIntent);
+
+            case R.id.calculate_button:
+                Intent calcIntent = new Intent(this, InputActivity.class);
+                calcIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(calcIntent);
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
