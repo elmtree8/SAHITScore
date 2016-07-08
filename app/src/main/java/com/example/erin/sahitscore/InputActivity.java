@@ -174,14 +174,11 @@ public class InputActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         if ((sizeStr.equals(""))) {
                             Toast.makeText(view.getContext(), "Please enter a size", Toast.LENGTH_SHORT).show();
-                        }
-                        if ((location.equals("[Location]"))) {
+                        } else if ((location.equals("[Location]"))) {
                             Toast.makeText(view.getContext(), "Please select a location", Toast.LENGTH_SHORT).show();
-                        }
-                        if ((fisherStr.equals("[Fisher Grade]"))) {
+                        } else if ((fisherStr.equals("[Fisher Grade]"))) {
                             Toast.makeText(view.getContext(), "Please select a Fisher grade", Toast.LENGTH_SHORT).show();
-                        }
-                        if (repair.equals("[Repair Modality]")) {
+                        } else if (repair.equals("[Repair Modality]")) {
                             Toast.makeText(view.getContext(), "Please select a repair modality", Toast.LENGTH_SHORT).show();
                         }
                     }
