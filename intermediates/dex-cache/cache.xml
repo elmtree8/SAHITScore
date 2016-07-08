@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\Erin\AndroidStudioProjects\SAHITScore-master\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="23.0.2"
+        sha1="617f68b19833672d049ce3e4b9d81a4c924e16ee">
+        <dex dex="C:\Users\Erin\AndroidStudioProjects\SAHITScore-master\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_f565d2f5dd41ef1eae91489f09f68dce975fb373\classes.dex" />
+    </item>
+
+</items>
