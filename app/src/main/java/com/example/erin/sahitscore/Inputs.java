@@ -4,15 +4,14 @@ import java.io.Serializable;
 
 /**
  * Created by erin on 26/04/16.
- * Object to keep track of data received in InputActivity
+ * Object to keep track of data received in InputActivity.
  * @author erin
- * @see InputActivity
  */
 
 public class Inputs implements Serializable {
-    private Integer age;
-    private Boolean hypertension;
-    private Integer wfns;
+    private final Integer age;
+    private final Boolean hypertension;
+    private final Integer wfns;
     private Integer size;
     private String location;
     private Integer fisher;
@@ -28,24 +27,12 @@ public class Inputs implements Serializable {
         return age;
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
     public Boolean getHypertension() {
         return hypertension;
     }
 
-    public void setHypertension(Boolean hypertension) {
-        this.hypertension = hypertension;
-    }
-
     public Integer getWfns() {
         return wfns;
-    }
-
-    public void setWfns(Integer wfns) {
-        this.wfns = wfns;
     }
 
     public Integer getSize() {

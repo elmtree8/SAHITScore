@@ -1,7 +1,7 @@
 package com.example.erin.sahitscore;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBar;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -16,20 +16,27 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
 
 /**
  * Created by erin on 03/05/16.
  * Calculates the statistical probability of mortality and unfavourable outcome
- * based on core, neuro, and full characteristics (from InputActivity)
+ * based on core, neuro, and full characteristics (given by the user in
+ * InputActivity). This uses the graphing software (MPAndroidChart) made by
+ * Philipp Jahoda accessible at https://github.com/PhilJay/MPAndroidChart/wiki/Getting-Started
  * @author erin
- * @see InputActivity
  */
 
-//TODO: Implement SE from Blessing
-
 public class ResultsActivity extends AppCompatActivity {
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +44,6 @@ public class ResultsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_results);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-
-        ActionBar ab = getSupportActionBar();
-        assert ab != null;
-        ab.setDisplayHomeAsUpEnabled(true);
 
         TextView coreText = (TextView) findViewById(R.id.coreText);
         TextView neuroText = (TextView) findViewById(R.id.neuroText);
@@ -64,25 +67,33 @@ public class ResultsActivity extends AppCompatActivity {
         Inputs input = InputController.getInput();
         Integer age = input.getAge();
         Integer ht;
-        if (input.getHypertension()) { ht = 1; }
-        else { ht = 0; }
+        if (input.getHypertension()) {
+            ht = 1;
+        } else {
+            ht = 0;
+        }
         Integer wfns = input.getWfns();
         Integer fisher = input.getFisher();
         String location = input.getLocation();
         Integer size = input.getSize();
         String repair = input.getRepair();
 
-        double LinPCoreMort = LPCoreMortality(age, ht, wfns);
+        SearchFile searchFile = new SearchFile();
+        Calculations calculations = new Calculations();
+
+        double LinPCoreMort = calculations.LPCoreMortality(age, ht, wfns);
         double PPCoreMort = 1 / (1 + Math.pow(Math.E, -LinPCoreMort));
-        double CIloCoreMort = LinPCoreMort - 1.96; // * se
-        double CIupCoreMort = LinPCoreMort + 1.96; // * se
+        double SELinPCoreMort = searchFile.readCSVFileFromAssets(getApplicationContext(), "lp_mort_core.csv", "se_mort_core.csv", LinPCoreMort);
+        double CIloCoreMort = LinPCoreMort - 1.96 * SELinPCoreMort;
+        double CIupCoreMort = LinPCoreMort + 1.96 * SELinPCoreMort;
         double PPloCoreMort = 1 / (1 + Math.pow(Math.E, -CIloCoreMort));
         double PPupCoreMort = 1 / (1 + Math.pow(Math.E, -CIupCoreMort));
 
-        double LinPCoreUF = LPCoreUF(age, ht, wfns);
+        double LinPCoreUF = calculations.LPCoreUF(age, ht, wfns);
         double PPCoreUF = 1 / (1 + Math.pow(Math.E, -LinPCoreUF));
-        double CIloCoreUF = LinPCoreUF - 1.96; // * se
-        double CIupCoreUF = LinPCoreUF + 1.96; // * se
+        double SELinPCoreUF = searchFile.readCSVFileFromAssets(getApplicationContext(), "lp_uf_core.csv", "se_uf_core.csv", LinPCoreUF);
+        double CIloCoreUF = LinPCoreUF - 1.96 * SELinPCoreUF;
+        double CIupCoreUF = LinPCoreUF + 1.96 * SELinPCoreUF;
         double PPloCoreUF = 1 / (1 + Math.pow(Math.E, -CIloCoreUF));
         double PPupCoreUF = 1 / (1 + Math.pow(Math.E, -CIupCoreUF));
         String coreMessage = getResources().getString(R.string.mortality) + Math.round(PPloCoreMort * 100) + getResources().getString(R.string.and) + Math.round(PPupCoreMort * 100) + getResources().getString(R.string.unfavourable) + Math.round(PPloCoreUF * 100) + getResources().getString(R.string.and) + Math.round(PPupCoreUF * 100) + getResources().getString(R.string.percent);
@@ -118,17 +129,19 @@ public class ResultsActivity extends AppCompatActivity {
             neuroChart.setVisibility(View.VISIBLE);
             neuroMsg.setVisibility(View.VISIBLE);
             neuroText.setVisibility(View.VISIBLE);
-            double LinPNeuroMort = LPNeuroMortality(age, ht, wfns, fisher, location, size);
+            double LinPNeuroMort = calculations.LPNeuroMortality(age, ht, wfns, fisher, location, size);
             double PPNeuroMort = 1 / (1 + Math.pow(Math.E, -LinPNeuroMort));
-            double CIloNeuroMort = LinPNeuroMort - 1.96; // * se
-            double CIupNeuroMort = LinPNeuroMort + 1.96; // * se
+            double SELinPNeuroMort = searchFile.readCSVFileFromAssets(getApplicationContext(), "lp_mort_neuro.csv", "se_mort_neuro.csv", LinPNeuroMort);
+            double CIloNeuroMort = LinPNeuroMort - 1.96 * SELinPNeuroMort;
+            double CIupNeuroMort = LinPNeuroMort + 1.96 * SELinPNeuroMort;
             double PPloNeuroMort = 1 / (1 + Math.pow(Math.E, -CIloNeuroMort));
             double PPupNeuroMort = 1 / (1 + Math.pow(Math.E, -CIupNeuroMort));
 
-            double LinPNeuroUF = LPNeuroUF(age, ht, wfns, fisher, location, size);
+            double LinPNeuroUF = calculations.LPNeuroUF(age, ht, wfns, fisher, location, size);
             double PPNeuroUF = 1 / (1 + Math.pow(Math.E, -LinPNeuroUF));
-            double CIloNeuroUF = LinPNeuroUF - 1.96; // * se
-            double CIupNeuroUF = LinPNeuroUF + 1.96; // * se
+            double SELinPNeuroUF = searchFile.readCSVFileFromAssets(getApplicationContext(), "lp_uf_neuro.csv", "se_uf_neuro.csv", LinPNeuroUF);
+            double CIloNeuroUF = LinPNeuroUF - 1.96 * SELinPNeuroUF;
+            double CIupNeuroUF = LinPNeuroUF + 1.96 * SELinPNeuroUF;
             double PPloNeuroUF = 1 / (1 + Math.pow(Math.E, -CIloNeuroUF));
             double PPupNeuroUF = 1 / (1 + Math.pow(Math.E, -CIupNeuroUF));
 
@@ -142,7 +155,7 @@ public class ResultsActivity extends AppCompatActivity {
 
             BarDataSet neuroSet = new BarDataSet(neuro, "");
             neuroSet.setValueTextSize(12f);
-            neuroSet.setColors(new int[] {R.color.colorBlack, R.color.colorRed, R.color.colorGreen}, this);
+            neuroSet.setColors(new int[]{R.color.colorBlack, R.color.colorRed, R.color.colorGreen}, this);
             BarData neuroData = new BarData(labels, neuroSet);
             neuroChart.setData(neuroData);
             neuroChart.setDescription("");
@@ -160,17 +173,19 @@ public class ResultsActivity extends AppCompatActivity {
             fullChart.setVisibility(View.VISIBLE);
             fullMsg.setVisibility(View.VISIBLE);
             fullText.setVisibility(View.VISIBLE);
-            double LinPFullMort = LPFullMortality(age, ht, wfns, fisher, location, size, repair);
+            double LinPFullMort = calculations.LPFullMortality(age, ht, wfns, fisher, location, size, repair);
             double PPFullMort = 1 / (1 + Math.pow(Math.E, -LinPFullMort));
-            double CIloFullMort = LinPFullMort - 1.96; // * se
-            double CIupFullMort = LinPFullMort + 1.96; // * se
+            double SELinPFullMort = searchFile.readCSVFileFromAssets(getApplicationContext(), "lp_mort_full.csv", "se_mort_full.csv", LinPFullMort);
+            double CIloFullMort = LinPFullMort - 1.96 * SELinPFullMort;
+            double CIupFullMort = LinPFullMort + 1.96 * SELinPFullMort;
             double PPloFullMort = 1 / (1 + Math.pow(Math.E, -CIloFullMort));
             double PPupFullMort = 1 / (1 + Math.pow(Math.E, -CIupFullMort));
 
-            double LinPFullUF = LPFullUF(age, ht, wfns, fisher, location, size, repair);
+            double LinPFullUF = calculations.LPFullUF(age, ht, wfns, fisher, location, size, repair);
             double PPFullUF = 1 / (1 + Math.pow(Math.E, -LinPFullUF));
-            double CIloFullUF = LinPFullUF - 1.96; // * se
-            double CIupFullUF = LinPFullUF + 1.96; // * se
+            double SELinPFullUF = searchFile.readCSVFileFromAssets(getApplicationContext(), "lp_uf_full.csv", "se_uf_full.csv", LinPFullUF);
+            double CIloFullUF = LinPFullUF - 1.96 * SELinPFullUF;
+            double CIupFullUF = LinPFullUF + 1.96 * SELinPFullUF;
             double PPloFullUF = 1 / (1 + Math.pow(Math.E, -CIloFullUF));
             double PPupFullUF = 1 / (1 + Math.pow(Math.E, -CIupFullUF));
 
@@ -184,7 +199,7 @@ public class ResultsActivity extends AppCompatActivity {
 
             BarDataSet fullSet = new BarDataSet(full, "");
             fullSet.setValueTextSize(12f);
-            fullSet.setColors(new int[] {R.color.colorBlack, R.color.colorRed, R.color.colorGreen}, this);
+            fullSet.setColors(new int[]{R.color.colorBlack, R.color.colorRed, R.color.colorGreen}, this);
             BarData fullData = new BarData(labels, fullSet);
             fullChart.setData(fullData);
             fullChart.setDescription("");
@@ -198,13 +213,18 @@ public class ResultsActivity extends AppCompatActivity {
             fullUFY.setAxisMinValue(0f);
             fullUFY.setEnabled(false);
         }
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_items, menu);
-        return true;
-    }
+    /**
+     * These two functions display menu options and navigate to different
+     * activities when an item is clicked.
+     * @param item  Indicates which item the user has selected
+     * @return      Boolean indicating success
+     */
+    // Used https://www.learn2crack.com/2014/06/android-action-bar-example.html
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -213,172 +233,73 @@ public class ResultsActivity extends AppCompatActivity {
                 Intent homeIntent = new Intent(this, InformationActivity.class);
                 homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(homeIntent);
+                return true;
+
+            case R.id.definitions_button:
+                Intent defsIntent = new Intent(this, InformationActivity.class);
+                defsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(defsIntent);
+                return true;
 
             case R.id.calculate_button:
                 Intent calcIntent = new Intent(this, InputActivity.class);
                 calcIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(calcIntent);
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private double LPCoreMortality(Integer age, Integer ht, Integer wfns) {
-        double[] wfnsNums = {0, 0.707, 1.393, 1.803, 2.786};
-        return -4.918 + age * 0.032 + ht * 0.327 + wfns * wfnsNums[wfns - 1];
+    /**
+     * @param menu  The corresponding menu object for this activity.
+     * @return      Boolean indicating success
+     */
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.results_menu_items, menu);
+        return true;
     }
 
-    private double LPNeuroMortality (Integer age, Integer ht, Integer wfns, Integer fisher, String location, Integer size) {
-        double[] wfnsNums = {0, 0.676, 1.352, 1.669, 2.578};
-        double[] fisherNums = {0, 0.008, 0.47, 0.323};
-        double[] locationNums = {0, 0.22, -0.1, 0.473};
-        double[] sizeNums = {0, 0.658, 1.178};
-        Double init = -5.475 + age * 0.03 + ht * 0.346 + wfns * wfnsNums[wfns - 1] + fisher * fisherNums[fisher - 1];
+    @Override
+    public void onStart() {
+        super.onStart();
 
-        switch(location) {
-            case "ACA":
-                init = init + locationNums[0];
-                return init;
-            case "ICA":
-                init = init + locationNums[1];
-                return init;
-            case "MCA":
-                init = init + locationNums[2];
-                return init;
-            case "PCA":
-                init = init + locationNums[3];
-                return init;
-        }
-        if (size < 12) {
-            init = init + sizeNums[0];
-        } else if (size < 24) {
-            init = init + sizeNums[1];
-        } else {
-            init = init + sizeNums[2];
-        }
-        return init;
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Results Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.example.erin.sahitscore/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
     }
 
-    private double LPFullMortality(Integer age, Integer ht, Integer wfns, Integer fisher, String location, Integer size, String repair) {
-        double[] wfnsNums = {0, 0.687, 1.273, 1.669, 2.404};
-        double[] fisherNums = {0, 0.072, 0.497, 0.487};
-        double[] locationNums = {0, 0.222, -0.027, 0.318};
-        double[] sizeNums = {0, 0.481, 0.37};
-        double[] repairNums = {0, -0.39, 1.543};
-        Double init = -5.350 + age * 0.027 + ht * 0.344 + wfns * wfnsNums[wfns - 1] + fisher * fisherNums[fisher - 1];
+    @Override
+    public void onStop() {
+        super.onStop();
 
-        switch(location) {
-            case "ACA":
-                init = init + locationNums[0];
-                return init;
-            case "ICA":
-                init = init + locationNums[1];
-                return init;
-            case "MCA":
-                init = init + locationNums[2];
-                return init;
-            case "PCA":
-                init = init + locationNums[3];
-                return init;
-        }
-        if (size < 12) {
-            init = init + sizeNums[0];
-        } else if (size < 24) {
-            init = init + sizeNums[1];
-        } else {
-            init = init + sizeNums[2];
-        }
-        switch(repair) {
-            case "Clip":
-                init = init + repairNums[0];
-                return init;
-            case "Coil":
-                init = init + repairNums[1];
-                return init;
-            case "Not Repaired":
-                init = init + repairNums[2];
-                return init;
-        }
-        return init;
-    }
-
-    private double LPCoreUF (Integer age, Integer ht, Integer wfns) {
-        double[] wfnsNums = {0, 0.688, 1.448, 1.723, 2.565};
-        return -3.703 + age * 0.034 + ht * 0.268 + wfns * wfnsNums[wfns - 1];
-    }
-
-    private double LPNeuroUF (Integer age, Integer ht, Integer wfns, Integer fisher, String location, Integer size) {
-        double[] wfnsNums = {0, 0.602, 1.36, 1.6, 2.399};
-        double[] fisherNums = {0, 0.31, 0.729, 0.854};
-        double[] locationNums = {0, -0.105, -0.266, 0.032};
-        double[] sizeNums = {0, 0.222, 0.529};
-        Double init = -4.175 + age * 0.032 + ht * 0.277 + wfns * wfnsNums[wfns - 1] + fisher * fisherNums[fisher - 1];
-
-        switch(location) {
-            case "ACA":
-                init = init + locationNums[0];
-                return init;
-            case "ICA":
-                init = init + locationNums[1];
-                return init;
-            case "MCA":
-                init = init + locationNums[2];
-                return init;
-            case "PCA":
-                init = init + locationNums[3];
-                return init;
-        }
-        if (size < 12) {
-            init = init + sizeNums[0];
-        } else if (size < 24) {
-            init = init + sizeNums[1];
-        } else {
-            init = init + sizeNums[2];
-        }
-        return init;
-    }
-
-    private double LPFullUF (Integer age, Integer ht, Integer wfns, Integer fisher, String location, Integer size, String repair) {
-        double[] wfnsNums = {0, 0.598, 1.321, 1.58, 2.3};
-        double[] fisherNums = {0, 0.349, 0.75, 0.931};
-        double[] locationNums = {0, -0.109, -0.247, -0.033};
-        double[] sizeNums = {0, 0.136, 0.131};
-        double[] repairNums = {0, -0.177, 0.842};
-        Double init = -4.122 + age * 0.031 + ht * 0.273 + wfns * wfnsNums[wfns - 1] + fisher * fisherNums[fisher - 1];
-
-        switch(location) {
-            case "ACA":
-                init = init + locationNums[0];
-                return init;
-            case "ICA":
-                init = init + locationNums[1];
-                return init;
-            case "MCA":
-                init = init + locationNums[2];
-                return init;
-            case "PCA":
-                init = init + locationNums[3];
-                return init;
-        }
-        if (size < 12) {
-            init = init + sizeNums[0];
-        } else if (size < 24) {
-            init = init + sizeNums[1];
-        } else {
-            init = init + sizeNums[2];
-        }
-        switch(repair) {
-            case "Clip":
-                init = init + repairNums[0];
-                return init;
-            case "Coil":
-                init = init + repairNums[1];
-                return init;
-            case "Not Repaired":
-                init = init + repairNums[2];
-                return init;
-        }
-        return init;
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Results Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.example.erin.sahitscore/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
     }
 }

@@ -1,18 +1,60 @@
 <resources>
     <string name="app_name">SAHIT Score</string>
-    <string name="input_activity_name">Calculate</string>
-    <string name="results_activity_name">Results</string>
-    <string name="information_activity_name">Home</string>
+
+    <string name="open_message">Get Started!</string>
+    <string name="region">Your region</string>
+    <string name="email">Your email</string>
+
+    <string name="title_activity_information">Information</string>
+    <string name="definitions_text">
+        "<b>Definitions</b>\n
+        <i>Age</i> should be entered as the patient\'s age in years.\n\n
+        <i>Hypertension</i> should be defined or considered present if there is a known history of
+        hypertension, the patient was taking antihypertensive medications prior to admission or
+        there are other clinically apparent signs consistent with essential hypertension such as
+        very high blood pressure on admission or electrocardiogram, echocardiogram, kidney or
+        other end-organ signs or laboratory findings consistent with a history of hypertension.\n\n
+        <i>Neurological or clinical grade</i> of the patient is based on the grade when they are
+        admitted to hospital and prior to aneurysm repair. This model includes studies that
+        determined the neurological grade before aneurysm repair but before and after
+        resuscitation including insertion of an external ventricular drain. Thus, you should use
+        the neurological grade determined before aneurysm repair. The model uses the World
+        Federation of Neurological Surgeons (WFNS) scale that is based on the modified Glasgow
+        coma score and presence or absence of focal motor deficit (including aphasia) as outlined
+        below.{Teasdale, 1988 #17556;Drake, 1988 #8208;Teasdale, 1974 #34155} If the Hunt and
+        Hess system is used, an approximate conversion method is shown.{Hunt, 1968 #10458}\n\n
+        <i>Size</i> is defined as the largest diameter of the aneurysm. This is usually the length from
+        the aneurysm neck at the aneurysm origin from the parent artery to the end of the dome of
+        the aneurysm.\n\n
+        <i>Location</i> follows the ISAT categorization as such:\n
+        ACA - Anterior cerebral artery, including Anterior communication, proximal to A comm,
+        pericallosal.\n
+        ICA - Internal carotid artery, including proximal to or ophthalmic region, posterior
+        communication region, and the bifurcation.\n
+        MCA - Middle cerebral artery.\n
+        PCA - Posterior circulation artery, including vertebro-basilar artery and branches.\n\n
+        <i>Fisher grade</i> should be calculated using the cranial computed tomographic scan obtained
+        when the patient presented with subarachnoid hemorrhage and before aneurysm repair:\n
+        1 - No SAH or intraventricular hemorrhage.\n
+        2 - Diffuse deposition of thin layer with all vertical layers of blood (interhemispheric
+        fissure, insular cistern, ambient cistern) &lt;1 mm thick.\n
+        3 - Vertical layers of blood ≥1 mm thick or localized clots (clots defined as &gt;3 x 5
+        mm).\n
+        4 - Diffuse or no subarachnoid blood, but with intracerebral or intraventricular clots.\n\n
+        <i>Method of repair</i> indicates whether the ruptured aneurysm was repaired by neurosurgical
+        clipping, endovascular coiling or not repaired. The data from which this model is
+        constructed leads to the recommendation that aneurysms repaired with adjunctive surgical
+        methods in addition to clipping including bypass and trapping are classified as
+        neurosurgical clipping and stent-assisted coiling, flow diverters and such are classified
+        as endovascular coiling."
+    </string>
+    <string name="calc">Calculate</string>
+
+    <string name="title_activity_input">Calculate</string>
     <string name="message1String">Prediction models for 3 month outcome after aSAH</string>
     <string name="message2String">Admission Characteristics</string>
-    <string name="message3String">Core</string>
+    <string name="core">Core</string>
     <string name="ageString">Age (0–99)</string>
-    <string name="hyperString">Hypertension (Y/N)</string>
-    <string name="message4String">Neuro</string>
-    <string name="sizeString">Size (mm)</string>
-    <string name="message5String">Full</string>
-    <string name="clear">Clear</string>
-    <string name="calc">Calculate</string>
     <string-array name="hypertension">
         <item>[Hypertension]</item>
         <item>Yes</item>
@@ -26,6 +68,8 @@
         <item>4</item>
         <item>5</item>
     </string-array>
+    <string name="neuro">Neuro</string>
+    <string name="sizeString">Size (mm)</string>
     <string-array name="locations">
         <item>[Location]</item>
         <item>ACA</item>
@@ -40,111 +84,24 @@
         <item>3</item>
         <item>4</item>
     </string-array>
+    <string name="full">Full</string>
     <string-array name="repairMode">
         <item>[Repair Modality]</item>
         <item>Clip</item>
         <item>Coil</item>
         <item>Not Repaired</item>
     </string-array>
-    <string name="resultsMessage">Results</string>
+    <string name="clear">Clear</string>
+
     <string name="title_activity_results">Results</string>
-    <string name="coreMsg">Core Characteristics</string>
-    <string name="neuroMsg">Neuro Characteristics</string>
-    <string name="fullMsg">Full Characteristics</string>
-    <string name="mortality">With a 95% confidence interval, the error for mortality is between&#160;</string>
-    <string name="unfavourable">% and for unfavourable outcome it is between&#160;</string>
-    <string name="and">% and&#160;</string>
+    <string name="coreString">Core Characteristics</string>
+    <string name="neuroString">Neuro Characteristics</string>
+    <string name="fullString">Full Characteristics</string>
+
+    <string name="mortality">With a 95&#37; confidence interval, the error for mortality is between&#160;</string>
+    <string name="unfavourable">&#37; and for unfavourable outcome it is between&#160;</string>
+    <string name="and">&#37; and&#160;</string>
     <string name="percent">%</string>
+
     <string name="home">Home</string>
-    <string name="title_activity_information">Information</string>
-    <string name="large_text">
-        "Material is the metaphor.\n\n"
-
-        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
-        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
-        "technologically advanced and open to imagination and magic.\n"
-        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
-        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
-        "flexibility of the material creates new affordances that supercede those in the physical "
-        "world, without breaking the rules of physics.\n"
-        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
-        "interact, and exist in space and in relation to each other. Realistic lighting shows "
-        "seams, divides space, and indicates moving parts.\n\n"
-
-        "Bold, graphic, intentional.\n\n"
-
-        "The foundational elements of print based design typography, grids, space, scale, color, "
-        "and use of imagery guide visual treatments. These elements do far more than please the "
-        "eye. They create hierarchy, meaning, and focus. Deliberate color choices, edge to edge "
-        "imagery, large scale typography, and intentional white space create a bold and graphic "
-        "interface that immerse the user in the experience.\n"
-        "An emphasis on user actions makes core functionality immediately apparent and provides "
-        "waypoints for the user.\n\n"
-
-        "Motion provides meaning.\n\n"
-
-        "Motion respects and reinforces the user as the prime mover. Primary user actions are "
-        "inflection points that initiate motion, transforming the whole design.\n"
-        "All action takes place in a single environment. Objects are presented to the user without "
-        "breaking the continuity of experience even as they transform and reorganize.\n"
-        "Motion is meaningful and appropriate, serving to focus attention and maintain continuity. "
-        "Feedback is subtle yet clear. Transitions are efﬁcient yet coherent.\n\n"
-
-        "3D world.\n\n"
-
-        "The material environment is a 3D space, which means all objects have x, y, and z "
-        "dimensions. The z-axis is perpendicularly aligned to the plane of the display, with the "
-        "positive z-axis extending towards the viewer. Every sheet of material occupies a single "
-        "position along the z-axis and has a standard 1dp thickness.\n"
-        "On the web, the z-axis is used for layering and not for perspective. The 3D world is "
-        "emulated by manipulating the y-axis.\n\n"
-
-        "Light and shadow.\n\n"
-
-        "Within the material environment, virtual lights illuminate the scene. Key lights create "
-        "directional shadows, while ambient light creates soft shadows from all angles.\n"
-        "Shadows in the material environment are cast by these two light sources. In Android "
-        "development, shadows occur when light sources are blocked by sheets of material at "
-        "various positions along the z-axis. On the web, shadows are depicted by manipulating the "
-        "y-axis only. The following example shows the card with a height of 6dp.\n\n"
-
-        "Resting elevation.\n\n"
-
-        "All material objects, regardless of size, have a resting elevation, or default elevation "
-        "that does not change. If an object changes elevation, it should return to its resting "
-        "elevation as soon as possible.\n\n"
-
-        "Component elevations.\n\n"
-
-        "The resting elevation for a component type is consistent across apps (e.g., FAB elevation "
-        "does not vary from 6dp in one app to 16dp in another app).\n"
-        "Components may have different resting elevations across platforms, depending on the depth "
-        "of the environment (e.g., TV has a greater depth than mobile or desktop).\n\n"
-
-        "Responsive elevation and dynamic elevation offsets.\n\n"
-
-        "Some component types have responsive elevation, meaning they change elevation in response "
-        "to user input (e.g., normal, focused, and pressed) or system events. These elevation "
-        "changes are consistently implemented using dynamic elevation offsets.\n"
-        "Dynamic elevation offsets are the goal elevation that a component moves towards, relative "
-        "to the component’s resting state. They ensure that elevation changes are consistent "
-        "across actions and component types. For example, all components that lift on press have "
-        "the same elevation change relative to their resting elevation.\n"
-        "Once the input event is completed or cancelled, the component will return to its resting "
-        "elevation.\n\n"
-
-        "Avoiding elevation interference.\n\n"
-
-        "Components with responsive elevations may encounter other components as they move between "
-        "their resting elevations and dynamic elevation offsets. Because material cannot pass "
-        "through other material, components avoid interfering with one another any number of ways, "
-        "whether on a per component basis or using the entire app layout.\n"
-        "On a component level, components can move or be removed before they cause interference. "
-        "For example, a floating action button (FAB) can disappear or move off screen before a "
-        "user picks up a card, or it can move if a snackbar appears.\n"
-        "On the layout level, design your app layout to minimize opportunities for interference. "
-        "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
-        "when a user tries to pick up one of cards.\n\n"
-    </string>
-    <string name="action_settings">Settings</string>
 </resources>
