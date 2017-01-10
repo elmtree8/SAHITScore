@@ -82,20 +82,20 @@ public class ResultsActivity extends AppCompatActivity {
         Calculations calculations = new Calculations();
 
         double LinPCoreMort = calculations.LPCoreMortality(age, ht, wfns);
-        double PPCoreMort = 1 / (1 + Math.pow(Math.E, -LinPCoreMort));
+        double PPCoreMort = (Math.pow(Math.E, LinPCoreMort)) / (1 + Math.pow(Math.E, LinPCoreMort));
         double SELinPCoreMort = searchFile.readCSVFileFromAssets(getApplicationContext(), "lp_mort_core.csv", "se_mort_core.csv", LinPCoreMort);
         double CIloCoreMort = LinPCoreMort - 1.96 * SELinPCoreMort;
         double CIupCoreMort = LinPCoreMort + 1.96 * SELinPCoreMort;
-        double PPloCoreMort = 1 / (1 + Math.pow(Math.E, -CIloCoreMort));
-        double PPupCoreMort = 1 / (1 + Math.pow(Math.E, -CIupCoreMort));
+        double PPloCoreMort = (Math.pow(Math.E, CIloCoreMort)) / (1 + Math.pow(Math.E, CIloCoreMort));
+        double PPupCoreMort = (Math.pow(Math.E, CIupCoreMort)) / (1 + Math.pow(Math.E, CIupCoreMort));
 
         double LinPCoreUF = calculations.LPCoreUF(age, ht, wfns);
-        double PPCoreUF = 1 / (1 + Math.pow(Math.E, -LinPCoreUF));
+        double PPCoreUF = (Math.pow(Math.E, LinPCoreUF)) / (1 + Math.pow(Math.E, LinPCoreUF));
         double SELinPCoreUF = searchFile.readCSVFileFromAssets(getApplicationContext(), "lp_uf_core.csv", "se_uf_core.csv", LinPCoreUF);
         double CIloCoreUF = LinPCoreUF - 1.96 * SELinPCoreUF;
         double CIupCoreUF = LinPCoreUF + 1.96 * SELinPCoreUF;
-        double PPloCoreUF = 1 / (1 + Math.pow(Math.E, -CIloCoreUF));
-        double PPupCoreUF = 1 / (1 + Math.pow(Math.E, -CIupCoreUF));
+        double PPloCoreUF = (Math.pow(Math.E, CIloCoreUF)) / (1 + Math.pow(Math.E, CIloCoreUF));
+        double PPupCoreUF = (Math.pow(Math.E, CIupCoreUF)) / (1 + Math.pow(Math.E, CIupCoreUF));
         String coreMessage = getResources().getString(R.string.mortality) + Math.round(PPloCoreMort * 100) + getResources().getString(R.string.and) + Math.round(PPupCoreMort * 100) + getResources().getString(R.string.unfavourable) + Math.round(PPloCoreUF * 100) + getResources().getString(R.string.and) + Math.round(PPupCoreUF * 100) + getResources().getString(R.string.percent);
         coreText.setText(coreMessage);
 
@@ -130,20 +130,20 @@ public class ResultsActivity extends AppCompatActivity {
             neuroMsg.setVisibility(View.VISIBLE);
             neuroText.setVisibility(View.VISIBLE);
             double LinPNeuroMort = calculations.LPNeuroMortality(age, ht, wfns, fisher, location, size);
-            double PPNeuroMort = 1 / (1 + Math.pow(Math.E, -LinPNeuroMort));
+            double PPNeuroMort = (Math.pow(Math.E, LinPNeuroMort)) / (1 + Math.pow(Math.E, LinPNeuroMort));
             double SELinPNeuroMort = searchFile.readCSVFileFromAssets(getApplicationContext(), "lp_mort_neuro.csv", "se_mort_neuro.csv", LinPNeuroMort);
             double CIloNeuroMort = LinPNeuroMort - 1.96 * SELinPNeuroMort;
             double CIupNeuroMort = LinPNeuroMort + 1.96 * SELinPNeuroMort;
-            double PPloNeuroMort = 1 / (1 + Math.pow(Math.E, -CIloNeuroMort));
-            double PPupNeuroMort = 1 / (1 + Math.pow(Math.E, -CIupNeuroMort));
+            double PPloNeuroMort = (Math.pow(Math.E, CIloNeuroMort)) / (1 + Math.pow(Math.E, CIloNeuroMort));
+            double PPupNeuroMort = (Math.pow(Math.E, CIupNeuroMort)) / (1 + Math.pow(Math.E, CIupNeuroMort));
 
             double LinPNeuroUF = calculations.LPNeuroUF(age, ht, wfns, fisher, location, size);
-            double PPNeuroUF = 1 / (1 + Math.pow(Math.E, -LinPNeuroUF));
+            double PPNeuroUF = (Math.pow(Math.E, LinPNeuroUF)) / (1 + Math.pow(Math.E, LinPNeuroUF));
             double SELinPNeuroUF = searchFile.readCSVFileFromAssets(getApplicationContext(), "lp_uf_neuro.csv", "se_uf_neuro.csv", LinPNeuroUF);
             double CIloNeuroUF = LinPNeuroUF - 1.96 * SELinPNeuroUF;
             double CIupNeuroUF = LinPNeuroUF + 1.96 * SELinPNeuroUF;
-            double PPloNeuroUF = 1 / (1 + Math.pow(Math.E, -CIloNeuroUF));
-            double PPupNeuroUF = 1 / (1 + Math.pow(Math.E, -CIupNeuroUF));
+            double PPloNeuroUF = (Math.pow(Math.E, CIloNeuroUF)) / (1 + Math.pow(Math.E, CIloNeuroUF));
+            double PPupNeuroUF = (Math.pow(Math.E, CIupNeuroUF)) / (1 + Math.pow(Math.E, CIupNeuroUF));
 
             String neuroMessage = getResources().getString(R.string.mortality) + Math.round(PPloNeuroMort * 100) + getResources().getString(R.string.and) + Math.round(PPupNeuroMort * 100) + getResources().getString(R.string.unfavourable) + Math.round(PPloNeuroUF * 100) + getResources().getString(R.string.and) + Math.round(PPupNeuroUF * 100) + getResources().getString(R.string.percent);
             neuroText.setText(neuroMessage);
@@ -174,20 +174,20 @@ public class ResultsActivity extends AppCompatActivity {
             fullMsg.setVisibility(View.VISIBLE);
             fullText.setVisibility(View.VISIBLE);
             double LinPFullMort = calculations.LPFullMortality(age, ht, wfns, fisher, location, size, repair);
-            double PPFullMort = 1 / (1 + Math.pow(Math.E, -LinPFullMort));
+            double PPFullMort = (Math.pow(Math.E, LinPFullMort)) / (1 + Math.pow(Math.E, LinPFullMort));
             double SELinPFullMort = searchFile.readCSVFileFromAssets(getApplicationContext(), "lp_mort_full.csv", "se_mort_full.csv", LinPFullMort);
             double CIloFullMort = LinPFullMort - 1.96 * SELinPFullMort;
             double CIupFullMort = LinPFullMort + 1.96 * SELinPFullMort;
-            double PPloFullMort = 1 / (1 + Math.pow(Math.E, -CIloFullMort));
-            double PPupFullMort = 1 / (1 + Math.pow(Math.E, -CIupFullMort));
+            double PPloFullMort = (Math.pow(Math.E, CIloFullMort)) / (1 + Math.pow(Math.E, CIloFullMort));
+            double PPupFullMort = (Math.pow(Math.E, CIupFullMort)) / (1 + Math.pow(Math.E, CIupFullMort));
 
             double LinPFullUF = calculations.LPFullUF(age, ht, wfns, fisher, location, size, repair);
-            double PPFullUF = 1 / (1 + Math.pow(Math.E, -LinPFullUF));
+            double PPFullUF = (Math.pow(Math.E, LinPFullUF)) / (1 + Math.pow(Math.E, LinPFullUF));
             double SELinPFullUF = searchFile.readCSVFileFromAssets(getApplicationContext(), "lp_uf_full.csv", "se_uf_full.csv", LinPFullUF);
             double CIloFullUF = LinPFullUF - 1.96 * SELinPFullUF;
             double CIupFullUF = LinPFullUF + 1.96 * SELinPFullUF;
-            double PPloFullUF = 1 / (1 + Math.pow(Math.E, -CIloFullUF));
-            double PPupFullUF = 1 / (1 + Math.pow(Math.E, -CIupFullUF));
+            double PPloFullUF = (Math.pow(Math.E, CIloFullUF)) / (1 + Math.pow(Math.E, CIloFullUF));
+            double PPupFullUF = (Math.pow(Math.E, CIupFullUF)) / (1 + Math.pow(Math.E, CIupFullUF));
 
             String fullMessage = getResources().getString(R.string.mortality) + Math.round(PPloFullMort * 100) + getResources().getString(R.string.and) + Math.round(PPupFullMort * 100) + getResources().getString(R.string.unfavourable) + Math.round(PPloFullUF * 100) + getResources().getString(R.string.and) + Math.round(PPupFullUF * 100) + getResources().getString(R.string.percent);
             fullText.setText(fullMessage);

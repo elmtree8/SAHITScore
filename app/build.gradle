@@ -30,6 +30,8 @@ dependencies {
     //noinspection GradleDependency
     compile 'com.android.support:design:23.2.1'
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
-    compile files('libs/mpandroidchartlibrary-2-2-4/mpandroidchartlibrary-2-2-4.jar')
     compile files('libs/opencsv-3.8.jar')
+    compile files('libs/mpandroidchartlibrary-2-2-4.jar')
+    compile files('libs/java-http-client-4.0.0-jar.jar')
+    compile files('libs/sendgrid-java-3.1.0-jar.jar')
 }

@@ -10,7 +10,7 @@ package com.example.erin.sahitscore;
 class Calculations {
     double LPCoreMortality(Integer age, Integer ht, Integer wfns) {
         double[] wfnsNums = {0, 0.707, 1.393, 1.803, 2.786};
-        return -4.918 + age * 0.032 + ht * 0.327 + wfns * wfnsNums[wfns - 1];
+        return -4.918 + age * 0.032 + ht * 0.327 + wfnsNums[wfns - 1];
     }
 
     double LPNeuroMortality(Integer age, Integer ht, Integer wfns, Integer fisher, String location, Integer size) {
@@ -18,7 +18,7 @@ class Calculations {
         double[] fisherNums = {0, 0.008, 0.47, 0.323};
         double[] locationNums = {0, 0.22, -0.1, 0.473};
         double[] sizeNums = {0, 0.658, 1.178};
-        Double init = -5.475 + age * 0.03 + ht * 0.346 + wfns * wfnsNums[wfns - 1] + fisher * fisherNums[fisher - 1];
+        Double init = -5.475 + age * 0.03 + ht * 0.346 + wfnsNums[wfns - 1] + fisher * fisherNums[fisher - 1];
 
         switch (location) {
             case "ACA":
@@ -50,7 +50,7 @@ class Calculations {
         double[] locationNums = {0, 0.222, -0.027, 0.318};
         double[] sizeNums = {0, 0.481, 0.37};
         double[] repairNums = {0, -0.39, 1.543};
-        Double init = -5.350 + age * 0.027 + ht * 0.344 + wfns * wfnsNums[wfns - 1] + fisher * fisherNums[fisher - 1];
+        Double init = -5.350 + age * 0.027 + ht * 0.344 + wfnsNums[wfns - 1] + fisher * fisherNums[fisher - 1];
 
         switch (location) {
             case "ACA":
@@ -89,7 +89,7 @@ class Calculations {
 
     double LPCoreUF(Integer age, Integer ht, Integer wfns) {
         double[] wfnsNums = {0, 0.688, 1.448, 1.723, 2.565};
-        return -3.703 + age * 0.034 + ht * 0.268 + wfns * wfnsNums[wfns - 1];
+        return -3.703 + age * 0.034 + ht * 0.268 + wfnsNums[wfns - 1];
     }
 
     double LPNeuroUF(Integer age, Integer ht, Integer wfns, Integer fisher, String location, Integer size) {
@@ -97,7 +97,7 @@ class Calculations {
         double[] fisherNums = {0, 0.31, 0.729, 0.854};
         double[] locationNums = {0, -0.105, -0.266, 0.032};
         double[] sizeNums = {0, 0.222, 0.529};
-        Double init = -4.175 + age * 0.032 + ht * 0.277 + wfns * wfnsNums[wfns - 1] + fisher * fisherNums[fisher - 1];
+        Double init = -4.175 + age * 0.032 + ht * 0.277 + wfnsNums[wfns - 1] + fisher * fisherNums[fisher - 1];
 
         switch (location) {
             case "ACA":
@@ -129,7 +129,7 @@ class Calculations {
         double[] locationNums = {0, -0.109, -0.247, -0.033};
         double[] sizeNums = {0, 0.136, 0.131};
         double[] repairNums = {0, -0.177, 0.842};
-        Double init = -4.122 + age * 0.031 + ht * 0.273 + wfns * wfnsNums[wfns - 1] + fisher * fisherNums[fisher - 1];
+        Double init = -4.122 + age * 0.031 + ht * 0.273 + wfnsNums[wfns - 1] + fisher * fisherNums[fisher - 1];
 
         switch (location) {
             case "ACA":
